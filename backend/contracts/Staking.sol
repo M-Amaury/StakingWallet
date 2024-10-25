@@ -149,7 +149,7 @@ contract Staking is ERC20 {
         // TODO: Ensure that the user hasn't already unstaked previously
         require(stakeWallet.untilBlock == 0, "Already unstaked");  
         // TODO: Transfer ETHB from the staking pool(this contract) to the wallet(Wallet contract)
-        uint256 currentBalance = stakeWallet.user.balanceOf();
+        uint256 currentBalance = stakeWallet.stakedAmount;
         payable(address(stakeWallet.user)).transfer(currentBalance);
         // TODO: Reward with WEB3 tokens that the user had accumulated so far
         uint256 rewardAmount = currentReward(_walletId);

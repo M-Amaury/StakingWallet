@@ -1,6 +1,7 @@
 const {loadFixture,} = require("@nomicfoundation/hardhat-toolbox/network-helpers");
 const { expect } = require("chai");
 const {ethers} = require("hardhat");
+const { lazy } = require("react");
 
 describe("Staking", function () {
   // We define a fixture to reuse the same setup in every test.
@@ -117,7 +118,111 @@ describe("Staking", function () {
         expect(wallet.sinceBlock).to.be.a('bigint').and.to.be.greaterThan(0)
       })
     })
-  })
 
+    describe("currentStake", function(){
+      it("Should show the current amount staked", async function(){
+        const {staking} =await loadFixture(deployFixture);
+
+        await helperCreateWallet(staking);
+
+        const txDeposit = await staking.walletDeposit(0, {value: ethers.parseEther('1')})
+        txDeposit.wait()
+
+        const txStake = await staking.stakeEth(0)
+        txStake.wait()
+
+        const wallet = await helperGetWallet(staking, 0)
+        const balance = await staking.currentStake(0)
+
+        expect(await ethers.provider.getBalance(wallet.user)).to.equal(ethers.parseEther('0'))
+        expect(balance.toString()).to.equal(ethers.parseEther('1'))
+      })
+    })
+
+    describe("currentReward", function(){
+      it("Should show the current reward of the staking pool", async function(){
+        const {staking} = await loadFixture(deployFixture)
+
+        await helperCreateWallet(staking)
+
+        const txDeposit = await staking.walletDeposit(0, {value: ethers.parseEther('1')})
+        txDeposit.wait()
+
+        const txStake = await staking.stakeEth(0)
+        txStake.wait()
+
+        await helperMineNBlocks(2)
+
+        const reward = await staking.currentReward(0)
+
+        expect(reward.toString()).to.equal(ethers.parseEther('0.02'))
+      })
+    })
+
+    describe("totalAddressesStaked", function(){
+      it("Should show the total number of address that staked in the pool", async function(){
+        const {staking} = await loadFixture(deployFixture)
+
+        await helperCreateWallet(staking)
+
+        const txDeposit = await staking.walletDeposit(0, {value: ethers.parseEther('1')})
+        txDeposit.wait()
+
+        const txStake = await staking.stakeEth(0)
+        txStake.wait()
+
+        const number = await staking.totalAddressesStaked()
+
+        expect(number).to.equal(1)
+      })
+    })
+
+    describe("isWalletStaked", function(){
+      it("Should check if a wallet has staked in the pool", async function(){
+        const {staking} = await loadFixture(deployFixture)
+
+        await helperCreateWallet(staking)
+
+        const txDeposit = await staking.walletDeposit(0, {value: ethers.parseEther('1')})
+        txDeposit.wait()
+
+        const txStake = await staking.stakeEth(0)
+        txStake.wait()
+
+        const isStaked = await staking.isWalletStaked(0)
+
+        expect(isStaked).to.be.true
+      })
+    })
+
+    describe("unstakeEth", function(){
+      it("Should unstake the eth from the pool", async function(){
+        const { staking } = await loadFixture(deployFixture)
+
+        await helperCreateWallet(staking)
+
+        const txDeposit = await staking.walletDeposit(0, {value: ethers.parseEther('1')})
+        txDeposit.wait()
+
+        const txStake = await staking.stakeEth(0)
+        txStake.wait()
+
+        let wallet = await helperGetWallet(staking,0)
+
+        expect(await ethers.provider.getBalance(wallet.user)).to.equal(ethers.parseEther('0'))
+        expect(wallet.stakedAmount.toString()).to.equal(ethers.parseEther('1'))
+
+        const tx = await staking.unstakeEth(0)
+        tx.wait()
+  
+        wallet = await helperGetWallet(staking, 0)
+  
+        expect((await ethers.provider.getBalance(wallet.user)).toString()).to.equal(ethers.parseEther('1'))
+        expect(wallet.stakedAmount.toString()).to.equal(ethers.parseEther('0'))
+        expect(wallet.sinceBlock.toString()).to.equal('0')
+        expect(wallet.untilBlock).to.be.a('bigint').and.to.be.greaterThan(0)
+      })
+    })
+  })
   });
 });
