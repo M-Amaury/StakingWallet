@@ -52,22 +52,24 @@ A decentralized application (DApp) that allows users to create wallets, deposit 
 git clone https://github.com/yourusername/staking-wallet-dapp.git
 
 2. Install backend dependencies
-bash
+```bash
 cd backend
 npm install
 
-4. Install frontend dependencies
-bash
+3. Install frontend dependencies
+```bash
 cd frontend
 npm install
 
 ### Running the Project
 
 1. Start the local Hardhat node
+```bash
 cd backend
 npx hardhat node
 
 2. Start the Next.js application
+```bash
 cd frontend
 npm run dev
 
@@ -101,6 +103,7 @@ Individual wallet contract that manages:
 ## Testing
 
 Run the test suite:
+```bash
 cd backend
 npx hardhat test
 
