@@ -117,7 +117,7 @@ npx hardhat test
 To deploy to a testnet (e.g., Arbitrum Sepolia):
 ```bash
 cd backend
-npx hardhat ignition deploy scripts/deploy.js --network arbitrumSepolia
+npx hardhat ignition deploy scripts/modules/Staking.js --network arbitrumSepolia
 ```
 
 ## Contact
