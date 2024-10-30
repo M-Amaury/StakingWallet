@@ -55,11 +55,13 @@ git clone https://github.com/yourusername/staking-wallet-dapp.git
 ```bash
 cd backend
 npm install
+```
 
 3. Install frontend dependencies
 ```bash
 cd frontend
 npm install
+```
 
 ### Running the Project
 
@@ -67,11 +69,13 @@ npm install
 ```bash
 cd backend
 npx hardhat node
+```
 
 2. Start the Next.js application
 ```bash
 cd frontend
 npm run dev
+```
 
 3. Open [http://localhost:3000](http://localhost:3000) in your browser
 
@@ -106,12 +110,15 @@ Run the test suite:
 ```bash
 cd backend
 npx hardhat test
+```
 
 ## Deployment
 
 To deploy to a testnet (e.g., Arbitrum Sepolia):
+```bash
 cd backend
 npx hardhat run scripts/deploy.js --network arbitrumSepolia
+```
 
 ## Contact
 Contract address Arbitrum Sepolia: [0xA550704E303b6329dfeaFAB2a27cA0e8a3fDc33A](https://sepolia.arbiscan.io/address/0xa550704e303b6329dfeafab2a27ca0e8a3fdc33a)
