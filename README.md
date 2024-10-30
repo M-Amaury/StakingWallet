@@ -52,10 +52,12 @@ A decentralized application (DApp) that allows users to create wallets, deposit 
 git clone https://github.com/yourusername/staking-wallet-dapp.git
 
 2. Install backend dependencies
+bash
 cd backend
 npm install
 
-3. Install frontend dependencies
+4. Install frontend dependencies
+bash
 cd frontend
 npm install
 
